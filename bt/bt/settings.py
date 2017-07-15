@@ -24,12 +24,11 @@ SECRET_KEY = os.environ['SERCRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ['IS_DEV'] == 'true':
-    print ('Running in dev mode')
     DEBUG = True
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
 
 
 # Application definition
