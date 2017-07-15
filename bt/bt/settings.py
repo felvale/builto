@@ -14,10 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SERCRET_KEY']
 
 
-if os.environ['IS_DEV'] == 'true':
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = bool(os.environ['IS_DEV'] == 'true')
 
 ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
 
