@@ -11,16 +11,18 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = os.environ['SERCRET_KEY']
+SECRET_KEY = os.getenv('SERCRET_KEY', '')
 
 
-DEBUG = bool(os.environ['IS_DEV'] == 'true')
+DEBUG = bool(os.getenv('IS_DEV', 'false') == 'true')
 
-ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', '')]
 
 
 INSTALLED_APPS = [
     'builto.apps.BuiltoConfig',
+    'chiara.apps.ChiaraConfig',
+    'felipe.apps.FelipeConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -62,11 +64,11 @@ WSGI_APPLICATION = 'bt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT']
+        'NAME': os.getenv('DB_NAME', ''),
+        'USER': os.getenv('DB_USER', ''),
+        'PASSWORD': os.getenv('DB_PASSWORD',''),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT', ''),
     }
 }
 
@@ -105,3 +107,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters':{
+        'standard':{
+            'format': '%(asctime)s [%(levelname)s] : %(name)s - %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+        'file':{
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.getcwd() + '/server.out',
+            'maxBytes': 1024 * 1024 * 10,
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console','file'],
+            'level': os.getenv('ROOT_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console','file'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+    },
+}

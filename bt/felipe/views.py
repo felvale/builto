@@ -10,4 +10,4 @@ def home_page(request):
     """
     Function for main page rendering
     """
-    return HttpResponse('main page for the hole site <br/> <a href="/chiara/"> go to chiara main page</a> <br/> <a href="/felipe/"> go to felipe main page</a>')
+    return HttpResponse('felipe main page</br><a href="/main/">go back to main page</a>')
